@@ -3,6 +3,7 @@
 Respositorio para trabajos prácticos de la materia *Teoría de algoritmos*
 
 [![Build Status](https://travis-ci.org/mlafroce/teoria-de-algoritmos.svg?branch=master)](https://travis-ci.org/mlafroce/teoria-de-algoritmos)
+[![codecov](https://codecov.io/gh/mlafroce/teoria-de-algoritmos/branch/master/graph/badge.svg)](https://codecov.io/gh/mlafroce/teoria-de-algoritmos)
 
 ## Trabajos prácticos
 
