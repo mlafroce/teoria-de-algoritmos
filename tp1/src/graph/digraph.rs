@@ -5,7 +5,13 @@ pub type VertexType = usize;
 pub type WeightType = i32;
 
 pub struct Digraph {
-	vertex_array: Vec<BTreeSet<(VertexType, WeightType)> >,
+	vertex_array: Vec<BTreeSet<Incidence> >,
+}
+
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct Incidence {
+	pub dst: VertexType,
+	pub weight: WeightType,
 }
 
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -38,26 +44,34 @@ impl Digraph {
 	pub fn adj_edges(&self, vertex: VertexType) -> BTreeSet<Edge> {
 		let mut edge_set = BTreeSet::new();
 		if let Some(incidence_set) = (&self.vertex_array).get(vertex) {
-			for &(dest_v, weight) in incidence_set {
-				edge_set.insert(Edge{src: vertex, dst: dest_v, weight: weight});
+			for incidence in incidence_set {
+				edge_set.insert(Edge{src: vertex, dst: incidence.dst, weight: incidence.weight});
 			}
 		}
 		edge_set
 	}
 
 	pub fn adj_vertexes(&self, vertex: VertexType) -> BTreeSet<VertexType> {
-		unimplemented!()
+		let mut vertex_set = BTreeSet::new();
+		let dest_aux = Incidence {dst: vertex, weight: 0};
+		for (src, incidence_set) in (&self.vertex_array).iter().enumerate() {
+			let incidence : Option<&Incidence> = incidence_set.get(&dest_aux);
+			if let Some(_) = incidence {
+				vertex_set.insert(src);
+			} 
+		}
+		vertex_set
 	}
 
-	pub fn add_edge(&mut self, src: VertexType, dest: VertexType) {
+	pub fn add_edge(&mut self, src: VertexType, dst: VertexType) {
 		if let Some(dest_set) = (&mut self.vertex_array).get_mut(src) {
-			dest_set.insert((dest, 0));
+			dest_set.insert(Incidence{dst: dst, weight: 0});
 		}
 	}
 
-	pub fn add_weighted_edge(&mut self, src: VertexType, dest: VertexType, weight: WeightType) {
+	pub fn add_weighted_edge(&mut self, src: VertexType, dst: VertexType, weight: WeightType) {
 		if let Some(dest_set) = (&mut self.vertex_array).get_mut(src) {
-			dest_set.insert((dest, weight));
+			dest_set.insert(Incidence{dst: dst, weight: weight});
 		}
 	}
 
@@ -83,12 +97,25 @@ impl Ord for Edge {
 
 impl PartialOrd for Edge {
 	fn partial_cmp(&self, other: &Edge) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
+		Some(self.cmp(other))
+	}
 }
 
 impl Default for Edge {
 	fn default() -> Edge {
 		Edge {src: 0, dst: 0, weight: 0}
+	}
+}
+
+
+impl Ord for Incidence {
+	fn cmp(&self, other: &Incidence) -> Ordering {
+		self.dst.cmp(&other.dst)
+	}
+}
+
+impl PartialOrd for Incidence {
+	fn partial_cmp(&self, other: &Incidence) -> Option<Ordering> {
+		Some(self.cmp(other))
 	}
 }

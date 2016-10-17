@@ -1,5 +1,7 @@
+use std::collections::BTreeSet;
 use graph::digraph::Digraph;
 use graph::digraph::Edge;
+use graph::digraph::VertexType;
 
 #[test]
 fn test_vertex_count(){
@@ -57,4 +59,23 @@ fn test_adj_edges(){
 	let test_edge = Edge{src: 3, dst: 4, weight: 0};
 	assert!(edges_from_3.contains(&test_edge));
 	assert!(!edges_from_3.contains(&Edge{src: 10, dst: 4, weight: 0}));
+}
+
+#[test]
+fn test_adj_vertexes(){
+	let mut g = Digraph::new(5);
+	g.add_edge(0, 0);
+	g.add_edge(0, 1);
+	g.add_edge(1, 0);
+	g.add_edge(1, 1);
+	g.add_edge(1, 2);
+	g.add_weighted_edge(3, 4, 1);
+	assert_eq!(g.adj_edges(0).len(), 2);
+	assert_eq!(g.adj_edges(1).len(), 3);
+	let vertexes_to_1:BTreeSet<VertexType> = g.adj_vertexes(1);
+	assert_eq!(vertexes_to_1.len(), 2);
+	// El peso no importa en la comparacíón
+	assert!(vertexes_to_1.contains(&0));
+	assert!(vertexes_to_1.contains(&1));
+	assert!(!vertexes_to_1.contains(&6));
 }
