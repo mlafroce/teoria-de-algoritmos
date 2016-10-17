@@ -1,5 +1,5 @@
-use std::collections::BinaryHeap;
 use std::cmp::Ordering;
+use std::collections::BinaryHeap;
 
 pub fn k_statistic(numbers: &Vec<i32>, k: i32) -> i32 {
 	// Sort ordena de mayor a menor
@@ -21,14 +21,12 @@ struct HeapminData {
 	data: i32,
 }
 
-//impl<T> Ord for HeapminData<T> {
 impl Ord for HeapminData {
 	fn cmp(&self, other: &HeapminData) -> Ordering {
 		other.data.cmp(&self.data)
 	}
 }
 
-//impl<T> PartialOrd for HeapminData<T> {
 impl PartialOrd for HeapminData {
 	fn partial_cmp(&self, other: &HeapminData) -> Option<Ordering> {
         Some(self.cmp(other))

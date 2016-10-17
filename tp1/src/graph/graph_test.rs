@@ -1,4 +1,5 @@
 use graph::digraph::Digraph;
+use graph::digraph::Edge;
 
 #[test]
 fn test_vertex_count(){
@@ -37,4 +38,23 @@ fn test_add_weighted_edge(){
 	g.add_weighted_edge(1, 0, 10);
 	let edge_count = g.edge_size();
 	assert_eq!(edge_count, 3);
+}
+
+#[test]
+fn test_adj_edges(){
+	let mut g = Digraph::new(5);
+	g.add_edge(0, 0);
+	g.add_edge(0, 1);
+	g.add_edge(1, 0);
+	g.add_edge(1, 1);
+	g.add_edge(1, 2);
+	g.add_weighted_edge(3, 4, 1);
+	assert_eq!(g.adj_edges(0).len(), 2);
+	assert_eq!(g.adj_edges(1).len(), 3);
+	let edges_from_3 = g.adj_edges(3);
+	assert_eq!(edges_from_3.len(), 1);
+	// El peso no importa en la comparacíón
+	let test_edge = Edge{src: 3, dst: 4, weight: 0};
+	assert!(edges_from_3.contains(&test_edge));
+	assert!(!edges_from_3.contains(&Edge{src: 10, dst: 4, weight: 0}));
 }

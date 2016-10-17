@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::collections::BTreeSet;
 
 pub type VertexType = usize;
@@ -7,10 +8,11 @@ pub struct Digraph {
 	vertex_array: Vec<BTreeSet<(VertexType, WeightType)> >,
 }
 
+#[derive(Copy, Clone, Eq, PartialEq)]
 pub struct Edge {
-	src: VertexType,
-	dst: VertexType,
-	weight: WeightType,
+	pub src: VertexType,
+	pub dst: VertexType,
+	pub weight: WeightType,
 }
 
 impl Digraph {
@@ -33,11 +35,17 @@ impl Digraph {
 		edge_count
 	}
 
-	pub fn adj_edges(&self) -> BTreeSet<Edge> {
-		unimplemented!()
+	pub fn adj_edges(&self, vertex: VertexType) -> BTreeSet<Edge> {
+		let mut edge_set = BTreeSet::new();
+		if let Some(incidence_set) = (&self.vertex_array).get(vertex) {
+			for &(dest_v, weight) in incidence_set {
+				edge_set.insert(Edge{src: vertex, dst: dest_v, weight: weight});
+			}
+		}
+		edge_set
 	}
 
-	pub fn adj_vertexes(&self) -> BTreeSet<VertexType> {
+	pub fn adj_vertexes(&self, vertex: VertexType) -> BTreeSet<VertexType> {
 		unimplemented!()
 	}
 
@@ -53,11 +61,34 @@ impl Digraph {
 		}
 	}
 
-	pub fn iter_vertexes(&self) {
+	pub fn iter_edges(&self) {
 		unimplemented!()
 	}
 
-	pub fn iter_edges(&self) {
-		unimplemented!()
+	pub fn iter_vertexes(&self) -> Vec<VertexType> {
+		let range = 0..self.vertex_size();
+		range.collect()
+	}
+}
+
+impl Ord for Edge {
+	fn cmp(&self, other: &Edge) -> Ordering {
+		let result = self.src.cmp(&other.src);
+		if result == Ordering::Equal {
+			return self.dst.cmp(&other.dst);
+		}
+		result
+	}
+}
+
+impl PartialOrd for Edge {
+	fn partial_cmp(&self, other: &Edge) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Default for Edge {
+	fn default() -> Edge {
+		Edge {src: 0, dst: 0, weight: 0}
 	}
 }
