@@ -3,7 +3,7 @@ language: rust
 env:
   - BUILD_DIR=tp1
 
-script: cd $BUILD_DIR && cargo test
+script: cd $BUILD_DIR && RUSTFLAGS='-C link-dead-code' cargo test
 
 addons:
   apt:
