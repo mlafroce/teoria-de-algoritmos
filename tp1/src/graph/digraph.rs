@@ -75,8 +75,15 @@ impl Digraph {
 		}
 	}
 
-	pub fn iter_edges(&self) {
-		unimplemented!()
+	pub fn iter_edges(&self) -> BTreeSet<Edge> {
+		let mut edges_set = BTreeSet::new();
+		for (src, incidence_set) in (&self.vertex_array).iter().enumerate() {
+			for incidence in incidence_set {
+				let edge = Edge {src: src, dst: incidence.dst, weight: incidence.weight};
+				edges_set.insert(edge); 
+			}
+		}
+		edges_set
 	}
 
 	pub fn iter_vertexes(&self) -> Vec<VertexType> {

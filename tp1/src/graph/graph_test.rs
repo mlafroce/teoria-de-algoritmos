@@ -79,3 +79,15 @@ fn test_adj_vertexes(){
 	assert!(vertexes_to_1.contains(&1));
 	assert!(!vertexes_to_1.contains(&6));
 }
+
+#[test]
+fn test_iter_edges(){
+	let mut g = Digraph::new(5);
+	g.add_edge(0, 0);
+	g.add_edge(0, 1);
+	assert_eq!(g.iter_edges().len(), 2);
+	g.add_edge(1, 0);
+	g.add_edge(1, 1);
+	g.add_weighted_edge(3, 4, 1);
+	assert_eq!(g.iter_edges().len(), 5);
+}
