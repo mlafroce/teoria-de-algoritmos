@@ -4,6 +4,7 @@ use std::collections::BTreeSet;
 pub type VertexType = usize;
 pub type WeightType = i32;
 
+#[derive(Clone)]
 pub struct Digraph {
 	vertex_array: Vec<BTreeSet<Incidence> >,
 }

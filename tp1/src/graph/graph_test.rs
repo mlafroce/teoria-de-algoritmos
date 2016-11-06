@@ -2,6 +2,9 @@ use std::collections::BTreeSet;
 use graph::digraph::Digraph;
 use graph::digraph::Edge;
 use graph::digraph::VertexType;
+use graph::path_finder::PathFinder;
+use graph::bfs::Bfs;
+
 
 #[test]
 fn test_vertex_count(){
@@ -90,4 +93,14 @@ fn test_iter_edges(){
 	g.add_edge(1, 1);
 	g.add_weighted_edge(3, 4, 1);
 	assert_eq!(g.iter_edges().len(), 5);
+}
+
+#[test]
+fn test_bfs_simple() {
+	let mut g = Digraph::new(5);
+	g.add_weighted_edge(0, 0, 5);
+	g.add_weighted_edge(0, 1, 5);
+	let mut bfs = Bfs::new(&g);
+	let path = bfs.find_path();
+	assert_eq!(path.len(), 3);
 }

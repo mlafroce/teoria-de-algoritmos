@@ -5,29 +5,53 @@ use std::collections::HashSet;
 
 pub type DistanceType = usize;
 
-struct PathFinder {
-  path: Vec<VertexType>,
-  edge_map: HashMap<VertexType, Edge>,
-  visited_set: HashSet<VertexType>,
+pub struct PathFinderResult {
+  pub path: Vec<VertexType>,
+  pub edge_map: HashMap<VertexType, Edge>,
+  pub visited_set: HashSet<VertexType>,
 }
 
-impl PathFinder {
-
-  fn find_path(&self) -> Vec<VertexType> {
-    vec![]
+impl PathFinderResult {
+  pub fn new() -> PathFinderResult {
+    PathFinderResult {
+      path: vec![],
+      edge_map: HashMap::new(),
+      visited_set: HashSet::new()
+    }
   }
+}
 
+pub trait PathFinder {
+
+  /**
+   * Mejorar esta parte del trait
+   */
+  fn find_path(&self) -> Vec<VertexType>;
+
+
+  /**
+   * Cantidad de aristas que hay que recorrer para encontrar el destino,
+   * recorriendo el camino óptimo encontrado.
+   */
   fn distance(&self) -> DistanceType {
-    *&(self.path).len()
+    self.get_path().len()
   }
 
+  /**
+   * Devuelve el arista al vértice vertex, dentro del camino encontra{do
+   */
   fn edge_to(&self, vertex: VertexType) -> Edge {
-    let some_edge = &(self.edge_map).get(&vertex);
+    let some_edge = self.get_edge_map().get(&vertex);
     *some_edge.unwrap()
   }
 
   fn visited(&self, vertex: VertexType) -> bool {
-    *&(self.visited_set).contains(&vertex)
+    self.get_visited_set().contains(&vertex)
   }
 
+  fn get_path(&self) -> &Vec<VertexType>;
+
+  fn get_edge_map(&self) -> &HashMap<VertexType, Edge>;
+
+  fn get_visited_set(&self) -> &HashSet<VertexType>;
 }
