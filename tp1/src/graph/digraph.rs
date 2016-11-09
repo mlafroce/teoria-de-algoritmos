@@ -4,6 +4,7 @@ use std::collections::BTreeSet;
 pub type VertexType = usize;
 pub type WeightType = i32;
 
+#[derive(Clone)]
 pub struct Digraph {
 	vertex_array: Vec<BTreeSet<Incidence> >,
 }
@@ -41,6 +42,9 @@ impl Digraph {
 		edge_count
 	}
 
+	/**
+	 * Edges from V
+	 */
 	pub fn adj_edges(&self, vertex: VertexType) -> BTreeSet<Edge> {
 		let mut edge_set = BTreeSet::new();
 		if let Some(incidence_set) = (&self.vertex_array).get(vertex) {
@@ -51,6 +55,9 @@ impl Digraph {
 		edge_set
 	}
 
+	/**
+	 * Edges to V
+	 */
 	pub fn adj_vertexes(&self, vertex: VertexType) -> BTreeSet<VertexType> {
 		let mut vertex_set = BTreeSet::new();
 		let dest_aux = Incidence {dst: vertex, weight: 0};

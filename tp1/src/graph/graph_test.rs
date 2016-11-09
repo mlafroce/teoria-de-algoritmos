@@ -3,6 +3,7 @@ use graph::digraph::Digraph;
 use graph::digraph::Edge;
 use graph::digraph::VertexType;
 
+
 #[test]
 fn test_vertex_count(){
 	let g = Digraph::new(10);
