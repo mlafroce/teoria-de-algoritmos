@@ -6,8 +6,8 @@ use graph::bfs::Bfs;
 fn test_bfs_simple() {
 	let mut g = Digraph::new(10);
 	g.add_edge(0, 1);
-	g.add_edge(0, 2);
 	g.add_edge(0, 3);
+	g.add_edge(0, 7);
 	g.add_edge(1, 2);
 	g.add_edge(2, 3);
 	g.add_edge(2, 5);
@@ -16,8 +16,12 @@ fn test_bfs_simple() {
 	g.add_edge(5, 6);
 	let mut bfs = Bfs::new(&g, 0, 6);
 	bfs.find_path();
-	assert_eq!(bfs.get_path().len(), 3);
+	// 0 -> 3 -> 4 -> 6
+	assert_eq!(bfs.get_path().len(), 4);
+	let path06 = vec![0, 3, 4, 6];
+	assert_eq!(bfs.get_path(), &path06);
 	bfs = Bfs::new(&g, 2, 6);
 	bfs.find_path();
+	// 2 -> 5 -> 6
 	assert_eq!(bfs.get_path().len(), 3);
 }

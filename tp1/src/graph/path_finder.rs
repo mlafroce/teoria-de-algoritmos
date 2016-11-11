@@ -20,13 +20,22 @@ impl PathFinderResult {
 		}
 	}
 
-	pub fn new_from_visited(&self, visited: &HashMap<VertexType, VertexType>, dst: VertexType) {
-		let mut last = dest;
-		while let Some(src) = visited.get(last) {
-			self.path.push_front(last);
-			last = src;
+	pub fn new_from_visited(visited: &HashMap<VertexType, VertexType>,
+													dst: VertexType)  -> PathFinderResult {
+		let mut last = dst;
+		let mut path = vec![];
+		while let Some(src) = visited.get(&last) {
+			path.push(last);
+			last = *src;
 		}
-		self.path.push_front(last);
+		path.push(last);
+		path.reverse();
+
+		PathFinderResult {
+			path: path,
+			edge_map: HashMap::new(),
+			visited_set: HashSet::new()
+		}
 	}
 }
 
@@ -36,7 +45,7 @@ pub trait PathFinder {
 	/**
 	 * Mejorar esta parte del trait
 	 */
-	fn find_path(&self);
+	fn find_path(&mut self);
 
 
 	/**

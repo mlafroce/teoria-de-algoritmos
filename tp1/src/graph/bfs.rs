@@ -24,7 +24,7 @@ impl Bfs {
 }
 
 impl PathFinder for Bfs {
-	fn find_path(&self) {
+	fn find_path(&mut self) {
 		let mut heap = VecDeque::new();
 		// Mapa destino -> origen
 		let mut visited = HashMap::new();
@@ -32,7 +32,7 @@ impl PathFinder for Bfs {
 		// Este algoritmo ignora pesos
 		heap.push_back(Edge{src: self.src, dst: self.src, weight: 0});
 		while let Some(edge) = heap.pop_front() {
-			let adj_edges = self.graph.adj_edges(edge.src);
+			let adj_edges = self.graph.adj_edges(edge.dst);
 			for adj_edge in adj_edges {
 				if !visited.contains_key(&adj_edge.dst) {
 					visited.insert(adj_edge.dst, adj_edge.src);
@@ -40,14 +40,15 @@ impl PathFinder for Bfs {
 						found = true;
 						println!("found");
 					}
+					heap.push_back(Edge{src: adj_edge.src, dst: adj_edge.dst, weight: 0});
 				}
 			}
-			// Mejorar esta condición, no se como ponerlo dentro del while,
-			if (found) {
-				heap.empty();
+			// Mejorar esta condición, no se como ponerlo al lado del let,
+			if found {
+				heap.clear();
 			}
 		}
-		build_result(visited);
+	self.result = PathFinderResult::new_from_visited(&visited, self.dst);
 	}
 
 	fn get_path(&self) -> &Vec<VertexType> {
