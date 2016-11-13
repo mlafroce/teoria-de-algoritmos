@@ -45,7 +45,6 @@ impl PathFinder for Dijkstra {
       let adj_edges = self.graph.adj_edges(vertex.label);
       for adj_edge in adj_edges {
         let current_distance = adj_edge.weight + vertex.weight;
-         adj_edge.src, adj_edge.dst, adj_edge.weight, vertex.weight, current_distance);
         if distances[adj_edge.dst] > current_distance {
           distances[adj_edge.dst] = current_distance;
           visited.insert(adj_edge.dst, adj_edge.src);
