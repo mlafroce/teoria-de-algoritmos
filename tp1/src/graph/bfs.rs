@@ -38,7 +38,6 @@ impl PathFinder for Bfs {
           visited.insert(adj_edge.dst, adj_edge.src);
           if adj_edge.dst == self.dst {
             found = true;
-            println!("found");
           }
           heap.push_back(Edge{src: adj_edge.src, dst: adj_edge.dst, weight: 0});
         }
